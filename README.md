@@ -1,2 +1,2 @@
-# rokosowsky-jpg.github.io
-QR document verification (TERRIKON)
+# AFINANCE
+Проверка подлинности документов по QR-коду.
