@@ -3,49 +3,42 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="color-scheme" content="dark">
 <meta name="robots" content="noindex">
 <title>Проверка документа — AFINA FINANCE LOMBARD</title>
 <style>
-  :root { --ink:#e6ebf0; --muted:#8e9aa7; --gold:#c9a55c; --gold-d:#a9853d; --bg:#0b0f14; --card:#141a21; --line:#232c36;
-          --field:#0f141a; --ok:#4cc38a; --ok-bg:#0f241a; --ok-bd:#1d5a3c; --bad:#ff7d72; --bad-bg:#2a1414; --bad-bd:#6b2b26; }
+  :root { --ink:#1a1e23; --muted:#6b7480; --gold:#c9a55c; --gold-d:#a9853d; --bg:#f2f3f5; --card:#fff; --line:#e2e5e9;
+          --ok:#22774f; --ok-bg:#e8f5ee; --ok-bd:#a9d8bf; --bad:#b03a31; --bad-bg:#fbeaea; --bad-bd:#e7b4b0; }
   * { box-sizing:border-box; }
-  html { background:var(--bg); }
   body { margin:0; background:var(--bg); color:var(--ink); font:16px/1.5 -apple-system, "Segoe UI", Roboto, Arial, sans-serif; }
-  header { background:#070a0d; border-bottom:1px solid var(--line); color:#fff; padding:20px 16px; }
-  .wrap { max-width:680px; margin:0 auto; }
+  header { background:#12151a; color:#fff; padding:22px 16px; }
+  .wrap { max-width:620px; margin:0 auto; }
+  .brand { display:flex; align-items:center; gap:14px; }
+  .logo { width:44px; height:44px; border-radius:10px; background:var(--gold); color:#12151a; display:grid; place-items:center;
+          font:700 24px Georgia, serif; flex:none; }
   .org { font-weight:700; font-size:18px; letter-spacing:.5px; }
-  .sub { color:var(--gold); font-size:12px; letter-spacing:2px; font-weight:600; margin-top:2px; }
+  .sub { color:var(--gold); font-size:12px; letter-spacing:2px; font-weight:600; }
   main { padding:22px 16px 40px; }
   .card { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:22px; }
   h1 { font-size:22px; margin:0 0 6px; }
   p.hint { color:var(--muted); margin:0 0 16px; font-size:14.5px; }
   form { display:flex; gap:8px; flex-wrap:wrap; }
-  input { flex:1 1 220px; font:600 18px/1 Consolas, "SF Mono", monospace; letter-spacing:1px; padding:12px 14px; border:1px solid #2c3743;
-          background:var(--field); color:var(--ink); border-radius:10px; text-transform:uppercase; min-width:0; }
-  input::placeholder { color:#55616d; }
+  input { flex:1 1 220px; font:600 18px/1 Consolas, "SF Mono", monospace; letter-spacing:1px; padding:12px 14px; border:1px solid #cfd4da;
+          border-radius:10px; text-transform:uppercase; min-width:0; }
   input:focus { outline:2px solid var(--gold); border-color:var(--gold); }
-  button, .btn { font:600 16px/1 inherit; padding:12px 20px; border:0; border-radius:10px; background:var(--gold); color:#11151a; cursor:pointer;
-                 text-decoration:none; display:inline-flex; align-items:center; gap:8px; }
-  button:active, .btn:active { background:var(--gold-d); }
-  .btn.ghost { background:transparent; color:var(--ink); border:1px solid #33404d; }
+  button { font:600 16px/1 inherit; padding:12px 20px; border:0; border-radius:10px; background:var(--gold); color:#12151a; cursor:pointer; }
+  button:active { background:var(--gold-d); }
   .result { margin-top:18px; border-radius:12px; padding:18px; border:1px solid; display:none; }
   .result.ok { display:block; background:var(--ok-bg); border-color:var(--ok-bd); }
   .result.bad { display:block; background:var(--bad-bg); border-color:var(--bad-bd); }
-  .result.wait { display:block; background:var(--field); border-color:var(--line); color:var(--muted); }
+  .result.wait { display:block; background:#fff; border-color:var(--line); color:var(--muted); }
   .verdict { font-size:19px; font-weight:700; display:flex; align-items:center; gap:10px; }
   .ok .verdict { color:var(--ok); } .bad .verdict { color:var(--bad); }
-  .mark { width:30px; height:30px; border-radius:50%; display:grid; place-items:center; color:#0b0f14; font-size:18px; flex:none; }
+  .mark { width:30px; height:30px; border-radius:50%; display:grid; place-items:center; color:#fff; font-size:18px; flex:none; }
   .ok .mark { background:var(--ok); } .bad .mark { background:var(--bad); }
   dl { margin:14px 0 0; display:grid; grid-template-columns:auto 1fr; gap:6px 14px; font-size:15px; }
   dt { color:var(--muted); } dd { margin:0; font-weight:600; word-break:break-word; }
   .note { margin-top:12px; font-size:13.5px; color:var(--muted); }
-  .orig { margin-top:14px; padding:14px; background:var(--field); border:1px solid var(--line); border-radius:10px; }
-  .orig .t { font-weight:600; margin-bottom:10px; }
-  .orig .bar { display:flex; gap:8px; flex-wrap:wrap; }
-  .orig .st { color:var(--muted); font-size:13.5px; }
-  .orig iframe { display:block; width:100%; height:78vh; margin-top:12px; border:1px solid var(--line); border-radius:8px; background:#fff; }
-  details.text { margin-top:14px; background:var(--field); border:1px solid var(--line); border-radius:10px; }
+  details.text { margin-top:14px; background:#fff; border:1px solid var(--line); border-radius:10px; }
   details.text summary { cursor:pointer; padding:12px 14px; font-weight:600; color:var(--ink); list-style:none; }
   details.text summary::-webkit-details-marker { display:none; }
   details.text summary::after { content:"▾"; float:right; color:var(--muted); }
@@ -55,8 +48,9 @@
 </style>
 </head>
 <body>
-<header><div class="wrap">
-  <div class="org">AFINA FINANCE LOMBARD</div><div class="sub">ПРОВЕРКА ДОКУМЕНТА</div>
+<header><div class="wrap brand">
+  <div class="logo">A</div>
+  <div><div class="org">AFINA FINANCE LOMBARD</div><div class="sub"> · ПРОВЕРКА ДОКУМЕНТА</div></div>
 </div></header>
 <main><div class="wrap">
   <div class="card">
@@ -136,42 +130,18 @@ async function check(raw) {
     const plain = await crypto.subtle.decrypt({ name: "AES-GCM", iv: all.slice(0,12) }, d.key, all.slice(12));
     const e = JSON.parse(new TextDecoder().decode(plain));
     const num = e.n ? "№ " + e.n : "б/н";
-    const orig = e.o ? `<div class="orig" id="orig"><div class="t">${e.o.m === "scan" ? "Оригинал документа (скан подписанного экземпляра)" : "Оригинал документа (PDF)"}</div>
-          <div class="st" id="orig-st">Загружаем оригинал…</div></div>` : "";
     const dl = "<dl>" + row("Код", code) + row("Документ", `${e.k} ${num} от ${e.d}`) + row("Тема", e.t) +
-               row("Кому", e.r) + row("Подписал", e.s) + "</dl>" + orig +
-               (e.x ? `<details class="text" ${e.st === "revoked" || e.o ? "" : "open"}><summary>Текст документа</summary><div class="doc">${esc(e.x)}</div></details>` : "");
+               row("Кому", e.r) + row("Подписал", e.s) + "</dl>" +
+               (e.x ? `<details class="text" ${e.st === "revoked" ? "" : "open"}><summary>Текст документа</summary><div class="doc">${esc(e.x)}</div></details>` : "");
     if (e.st === "revoked") {
       show("bad", `<div class="verdict"><span class="mark">✕</span>Документ отозван</div>${dl}
         <div class="note">Отозван ${esc(e.rd || "")}${e.rr ? ": " + esc(e.rr) : ""}. Документ больше не действует.</div>`);
     } else {
       show("ok", `<div class="verdict"><span class="mark">✓</span>Документ подлинный</div>${dl}
-        <div class="note">Документ выдан ${esc(reg.org || "")} и зарегистрирован в реестре. Сверьте реквизиты${e.x || e.o ? " и текст" : ""} с бумажным экземпляром.</div>`);
+        <div class="note">Документ выдан ${esc(reg.org || "")} и зарегистрирован в реестре. Сверьте реквизиты${e.x ? " и текст" : ""} с бумажным экземпляром.</div>`);
     }
-    if (e.o) loadOriginal(e.o, d.key, code);
   } catch (err) {
     show("bad", `<div class="verdict"><span class="mark">!</span>Не удалось проверить</div><div class="note">${esc(err.message || err)}</div>`);
-  }
-}
-
-let origUrl = null;
-async function loadOriginal(o, key, code) {
-  const st = document.getElementById("orig-st"), box = document.getElementById("orig");
-  try {
-    const r = await fetch(o.f + "?h=" + encodeURIComponent(o.h || ""), { cache: "no-store" });
-    if (!r.ok) throw new Error("файл оригинала ещё не опубликован (" + r.status + ")");
-    const all = new Uint8Array(await r.arrayBuffer());
-    const pdf = await crypto.subtle.decrypt({ name: "AES-GCM", iv: all.slice(0,12) }, key, all.slice(12));
-    if (origUrl) URL.revokeObjectURL(origUrl);
-    origUrl = URL.createObjectURL(new Blob([pdf], { type: "application/pdf" }));
-    const size = (pdf.byteLength / 1024 / 1024).toFixed(pdf.byteLength > 1048576 ? 1 : 2);
-    st.outerHTML = `<div class="bar"><a class="btn" href="${origUrl}" target="_blank" rel="noopener">Открыть оригинал (PDF)</a>
-      <a class="btn ghost" href="${origUrl}" download="${esc(code)}.pdf">Скачать</a></div><div class="st" style="margin-top:8px">PDF · ${size} МБ</div>`;
-    if (window.matchMedia("(min-width: 760px)").matches) {
-      const f = document.createElement("iframe"); f.src = origUrl; f.title = "Оригинал документа"; box.appendChild(f);
-    }
-  } catch (err) {
-    if (st) st.textContent = "Оригинал не загрузился: " + (err.message || err);
   }
 }
 
