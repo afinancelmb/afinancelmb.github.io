@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Проверка документа — AFINA FINANCE LOMBARD</title>
+<style>
+  :root { --ink:#1a1e23; --muted:#6b7480; --gold:#c9a55c; --gold-d:#a9853d; --bg:#f2f3f5; --card:#fff; --line:#e2e5e9;
+          --ok:#22774f; --ok-bg:#e8f5ee; --ok-bd:#a9d8bf; --bad:#b03a31; --bad-bg:#fbeaea; --bad-bd:#e7b4b0; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); font:16px/1.5 -apple-system, "Segoe UI", Roboto, Arial, sans-serif; }
+  header { background:#12151a; color:#fff; padding:22px 16px; }
+  .wrap { max-width:620px; margin:0 auto; }
+  .brand { display:flex; align-items:center; gap:14px; }
+  .logo { width:44px; height:44px; border-radius:10px; background:var(--gold); color:#12151a; display:grid; place-items:center;
+          font:700 24px Georgia, serif; flex:none; }
+  .org { font-weight:700; font-size:18px; letter-spacing:.5px; }
+  .sub { color:var(--gold); font-size:12px; letter-spacing:2px; font-weight:600; }
+  main { padding:22px 16px 40px; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:22px; }
+  h1 { font-size:22px; margin:0 0 6px; }
+  p.hint { color:var(--muted); margin:0 0 16px; font-size:14.5px; }
+  form { display:flex; gap:8px; flex-wrap:wrap; }
+  input { flex:1 1 220px; font:600 18px/1 Consolas, "SF Mono", monospace; letter-spacing:1px; padding:12px 14px; border:1px solid #cfd4da;
+          border-radius:10px; text-transform:uppercase; min-width:0; }
+  input:focus { outline:2px solid var(--gold); border-color:var(--gold); }
+  button { font:600 16px/1 inherit; padding:12px 20px; border:0; border-radius:10px; background:var(--gold); color:#12151a; cursor:pointer; }
+  button:active { background:var(--gold-d); }
+  .result { margin-top:18px; border-radius:12px; padding:18px; border:1px solid; display:none; }
+  .result.ok { display:block; background:var(--ok-bg); border-color:var(--ok-bd); }
+  .result.bad { display:block; background:var(--bad-bg); border-color:var(--bad-bd); }
+  .result.wait { display:block; background:#fff; border-color:var(--line); color:var(--muted); }
+  .verdict { font-size:19px; font-weight:700; display:flex; align-items:center; gap:10px; }
+  .ok .verdict { color:var(--ok); } .bad .verdict { color:var(--bad); }
+  .mark { width:30px; height:30px; border-radius:50%; display:grid; place-items:center; color:#fff; font-size:18px; flex:none; }
+  .ok .mark { background:var(--ok); } .bad .mark { background:var(--bad); }
+  dl { margin:14px 0 0; display:grid; grid-template-columns:auto 1fr; gap:6px 14px; font-size:15px; }
+  dt { color:var(--muted); } dd { margin:0; font-weight:600; word-break:break-word; }
+  .note { margin-top:12px; font-size:13.5px; color:var(--muted); }
+  details.text { margin-top:14px; background:#fff; border:1px solid var(--line); border-radius:10px; }
+  details.text summary { cursor:pointer; padding:12px 14px; font-weight:600; color:var(--ink); list-style:none; }
+  details.text summary::-webkit-details-marker { display:none; }
+  details.text summary::after { content:"▾"; float:right; color:var(--muted); }
+  details.text[open] summary::after { content:"▴"; }
+  .doc { padding:4px 16px 16px; white-space:pre-wrap; font:15px/1.6 Georgia, "Times New Roman", serif; color:var(--ink); word-break:break-word; }
+  footer { color:var(--muted); font-size:12.5px; text-align:center; margin-top:18px; }
+</style>
+</head>
+<body>
+<header><div class="wrap brand">
+  <div class="logo">A</div>
+  <div><div class="org">AFINA FINANCE LOMBARD</div><div class="sub"> · ПРОВЕРКА ДОКУМЕНТА</div></div>
+</div></header>
+<main><div class="wrap">
+  <div class="card">
+    <h1>Проверка подлинности документа</h1>
+    <p class="hint">Отсканируйте QR-код на документе или введите код подлинности, напечатанный рядом с ним.</p>
+    <form id="f" autocomplete="off">
+      <input id="code" placeholder="AF-XXXX-XXXX" maxlength="40" inputmode="text" aria-label="Код подлинности">
+      <button type="submit">Проверить</button>
+    </form>
+    <div id="res" class="result" role="status" aria-live="polite"></div>
+  </div>
+  <footer id="foot">Реестр выданных документов AFINA FINANCE LOMBARD</footer>
+</div></main>
+<script>
+const ITER = 100000;
+const A = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
+const res = document.getElementById("res");
+const inp = document.getElementById("code");
+let registry = null;
+
+function extract(text) {
+  if (!text) return null;
+  const cyr = "АВЕКМНОРСТХУ", lat = "ABEKMHOPCTXY";
+  let t = "";
+  for (const ch of text.toUpperCase()) { const i = cyr.indexOf(ch); t += i >= 0 ? lat[i] : ch; }
+  const rx = /(?:^|[^A-Z0-9])AF[\s\-–—_]*([A-Z0-9]{4})[\s\-–—_]*([A-Z0-9]{4})(?![A-Z0-9])/g;
+  let m;
+  while ((m = rx.exec(t)) !== null) {
+    const body = (m[1] + m[2]).replace(/0/g,"O").replace(/1/g,"I").replace(/8/g,"B").replace(/9/g,"G");
+    if ([...body].every(c => A.includes(c))) return "AF-" + body.slice(0,4) + "-" + body.slice(4);
+  }
+  return null;
+}
+
+async function derive(code) {
+  const enc = new TextEncoder();
+  const base = await crypto.subtle.importKey("raw", enc.encode(code), "PBKDF2", false, ["deriveBits"]);
+  const bits = new Uint8Array(await crypto.subtle.deriveBits(
+    { name: "PBKDF2", hash: "SHA-256", salt: enc.encode("AFINA-QR-v1"), iterations: ITER }, base, 384));
+  const id = [...bits.slice(0,16)].map(b => b.toString(16).padStart(2,"0")).join("");
+  const key = await crypto.subtle.importKey("raw", bits.slice(16,48), "AES-GCM", false, ["decrypt"]);
+  return { id, key };
+}
+
+async function load() {
+  if (registry) return registry;
+  const r = await fetch("r.json?t=" + Date.now(), { cache: "no-store" });
+  if (!r.ok) throw new Error("Реестр недоступен (" + r.status + ")");
+  registry = await r.json();
+  if (registry.updated) document.getElementById("foot").textContent =
+    "Реестр выданных документов " + (registry.org || "") + " · обновлён " + registry.updated;
+  return registry;
+}
+
+function esc(s) { return String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
+
+function show(cls, html) { res.className = "result " + cls; res.innerHTML = html; }
+
+function row(k, v) { return v ? `<dt>${k}</dt><dd>${esc(v)}</dd>` : ""; }
+
+async function check(raw) {
+  const code = extract(raw);
+  if (!code) { show("bad", `<div class="verdict"><span class="mark">!</span>Код не распознан</div>
+      <div class="note">Код выглядит так: AF-XXXX-XXXX. Проверьте, что он введён полностью.</div>`); return; }
+  inp.value = code;
+  show("wait", "Проверяем " + code + "…");
+  try {
+    const [reg, d] = await Promise.all([load(), derive(code)]);
+    const blob = reg.e && reg.e[d.id];
+    if (!blob) {
+      show("bad", `<div class="verdict"><span class="mark">✕</span>Документ не найден</div>
+        <div class="note">Код ${esc(code)} не выдавался организацией ${esc(reg.org || "")}. Документ с таким QR-кодом не подтверждён.
+        Если документ получен недавно, повторите проверку позже или свяжитесь с организацией.</div>`);
+      return;
+    }
+    const all = Uint8Array.from(atob(blob), c => c.charCodeAt(0));
+    const plain = await crypto.subtle.decrypt({ name: "AES-GCM", iv: all.slice(0,12) }, d.key, all.slice(12));
+    const e = JSON.parse(new TextDecoder().decode(plain));
+    const num = e.n ? "№ " + e.n : "б/н";
+    const dl = "<dl>" + row("Код", code) + row("Документ", `${e.k} ${num} от ${e.d}`) + row("Тема", e.t) +
+               row("Кому", e.r) + row("Подписал", e.s) + "</dl>" +
+               (e.x ? `<details class="text" ${e.st === "revoked" ? "" : "open"}><summary>Текст документа</summary><div class="doc">${esc(e.x)}</div></details>` : "");
+    if (e.st === "revoked") {
+      show("bad", `<div class="verdict"><span class="mark">✕</span>Документ отозван</div>${dl}
+        <div class="note">Отозван ${esc(e.rd || "")}${e.rr ? ": " + esc(e.rr) : ""}. Документ больше не действует.</div>`);
+    } else {
+      show("ok", `<div class="verdict"><span class="mark">✓</span>Документ подлинный</div>${dl}
+        <div class="note">Документ выдан ${esc(reg.org || "")} и зарегистрирован в реестре. Сверьте реквизиты${e.x ? " и текст" : ""} с бумажным экземпляром.</div>`);
+    }
+  } catch (err) {
+    show("bad", `<div class="verdict"><span class="mark">!</span>Не удалось проверить</div><div class="note">${esc(err.message || err)}</div>`);
+  }
+}
+
+document.getElementById("f").addEventListener("submit", ev => { ev.preventDefault(); check(inp.value); });
+const q = new URLSearchParams(location.search).get("c") || location.hash.slice(1);
+if (q) { inp.value = q; check(q); }
+</script>
+</body>
+</html>
